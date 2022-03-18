@@ -1,0 +1,47 @@
+template <typename T>
+priority_queue<T>::priority_queue(): h()
+{
+}
+
+
+// precondition: priority_queue is not emtpy
+// postcondition: highest priority item has been removed
+template <typename T>
+void priority_queue<T>::pop()
+{
+   assert(!empty());
+   h.remove();
+}
+
+
+// postcondition: item has been inserted
+template <typename T>
+void priority_queue<T>::push (const T& item)
+{
+   h.insert(item);
+}
+
+
+// postcondition: returned whether priority queue is empty
+template <typename T>
+bool priority_queue<T>::empty () const
+{
+   return h.is_empty();
+}
+
+
+// postcondition: returned number of items in the priority queue
+template <typename T>
+unsigned int priority_queue<T>::size() const
+{
+   return h.size();
+}
+
+
+// precondition: priority queue is not empty
+// postcondition: copy of highest priority item has been returned
+template <typename T>
+T priority_queue<T>::top() const
+{
+   return h.max();
+}

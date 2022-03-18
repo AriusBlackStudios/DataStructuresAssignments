@@ -1,0 +1,99 @@
+//jade ainsworth
+//data structures
+//fall 2021
+#include <cassert>
+#include <cstdlib>
+
+
+namespace main_savitch_12A 
+{
+template <class RecordType>
+table<RecordType>::table() {
+  size_t i;
+  used = 0;
+  for (i = 0; i < CAPACITY; ++i)
+    data[i].key = NEVER_USED;
+}
+
+template <class RecordType>
+void table<RecordType>::insert(const RecordType& entry)
+{
+  bool already_present;
+  size_t index;
+  find_index(entry.key, already_present, index);
+  if (!already_present) {
+    assert(size() < CAPACITY);
+    index = hash(entry.key);
+    while (!is_vacant(index)) index = next_index(index);
+    ++used;
+  }
+
+  data[index] = entry;
+}
+
+template <class RecordType>
+void table<RecordType>::remove(int key)
+{
+  bool found;
+  size_t index;
+  find_index(key, found, index);
+  if (found) 
+  { 
+      data[index].key =PREVIOUSLY_USED;
+      --used;
+  }
+}
+
+template <class RecordType>
+bool table<RecordType>::is_present(int key) const
+{
+  bool found;
+  size_t index;
+  find_index(key, found, index);
+  return found;
+}
+
+template <class RecordType>
+void table<RecordType>::find(int key, bool& found, RecordType& result) const
+{
+  size_t index;
+  find_index(key, found, index);
+  if (found) 
+    result = data[index];
+}
+
+
+
+template <class RecordType>
+inline size_t table<RecordType>::hash(int key) const {
+  return (key % (CAPACITY)) + 1;
+}
+
+template <class RecordType>
+inline size_t table<RecordType>::next_index(size_t index) const
+{
+  return (index) % CAPACITY;
+}
+
+template <class RecordType>
+void table<RecordType>::find_index(int key, bool& found, size_t& i) const
+{
+  size_t count= 0;
+  i = hash(key);
+  while ((count < CAPACITY) && (data[i].key != NEVER_USED) && (data[i].key != key)) {
+    ++count;
+    i = next_index(i);
+  }
+  found = (data[i].key == key);
+}
+
+template <class RecordType>
+inline bool table<RecordType>::never_used(size_t index) const {
+  return (data[index].key == NEVER_USED);
+}
+
+template <class RecordType>
+inline bool table<RecordType>::is_vacant(size_t index) const {
+  return (data[index].key == NEVER_USED) || (data[index].key == PREVIOUSLY_USED);
+}
+}

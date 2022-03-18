@@ -1,0 +1,131 @@
+
+template <typename T>
+heap<T>::heap(): v(){
+}
+// postcondition: empty heap has been created
+
+template <typename T>
+unsigned int heap<T>::size() const{
+  return v.size();
+}
+
+
+// postcondition: number of elements in a heap has been returned
+template <typename T>
+bool heap<T>::is_empty() const{
+  return size()==0;
+}
+// postcondtion: returned whether the heap is empty
+
+
+template <typename T>
+void heap<T>::insert (const T& item)
+{
+   v.push_back(item);
+   //the class invariance
+   int child = size()-1;
+   int parent = (child-1)/2;
+   if (parent < 0)
+   {
+       return;
+   }
+   while (child > 0)
+   {
+       if (v[parent] < v[child])
+       {
+           T tmp = v[parent];
+           v[parent] = v[child];
+           v[child] = tmp;
+           child = parent;
+           parent = (child-1)/2;
+       }
+       else
+       {
+           break;
+       }
+      
+   }
+  
+}
+// postcondition: item has been added
+
+
+template <typename T>
+void heap<T>::remove(){
+  assert(!is_empty());
+  if (size() == 1)
+  {
+    v.erase(v.begin());//delete vector, from begining
+    return;
+  }
+  
+   v[0] = v[v.size()-1];//replace thing in root with last child
+   
+   v.erase(v.begin()+v.size()-1);//rease last element
+  //-------reheapification------------
+  int parent= 0;
+  int child= 0;
+   while (size() > parent*2+1)
+   {
+       child = max_child(parent); //chose larger child to compair to parent
+       if (v[child] > v[parent]) //if child is larger
+       {
+         //shuffle them numbers
+           T tmp = v[parent];
+           v[parent] = v[child];
+           v[child] = tmp;
+           parent = child;
+       }
+       else
+       {
+           break;
+       }
+      
+   }
+  //repeat root with last child, and then shift values around
+}
+// precondition: heap is not empty
+// postcondition: largest item has been removed from the heap
+
+
+template <typename T>
+T heap<T>::max() const{
+  return v[0];
+}
+// precondition: heap is not empty
+// postcondition: copy of largest element in the heap has been returned
+
+
+template <typename T>
+T& heap<T>::max()
+{
+   assert(!is_empty());
+   return v[0];
+}
+// precondition: heap is not empty
+// postcondition: access to largest element in the heap has been returned
+
+template <typename T>
+unsigned int heap<T>::max_child (unsigned int index) const
+{
+   unsigned int left_child(index*2+1);
+   unsigned int right_child(index*2+2);
+   assert(v.size() > left_child);
+   if (v.size() > right_child)
+   {
+       //has two children
+       if (v[left_child] > v[right_child])
+       {
+           return left_child;
+       }
+       else
+       {
+           return right_child;
+       }
+   }
+   else
+   {
+       //has only left child
+       return left_child;
+   }
+}

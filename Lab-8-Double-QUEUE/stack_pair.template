@@ -1,0 +1,76 @@
+//Jade Ainsworth
+//Data Structures
+//11/10/2021
+//Lab 8: Templates and stacks
+
+//constructor
+template <class T>
+stack_pair<T>::stack_pair(){
+  top_a=0;
+  top_b=CAPACITY;
+  
+}
+
+template <class T>
+bool stack_pair<T>::is_Empty_A(){
+  return top_a == 0;
+}
+
+template <class T>
+bool stack_pair<T>::is_Empty_B(){
+  return top_b == CAPACITY;
+}
+//pop methods
+template <class T>
+T stack_pair<T>::pop_a(){
+    if(!is_Empty_A()){
+      std::cout<< " ...test passed"<<std::endl;
+      top_a--;
+      return arr[top_a];
+    }
+    else
+    {
+      std::cout<< " ...test failed. Stack a is empty."<<std::endl;
+    }
+}
+
+template <class T>
+T stack_pair<T>::pop_b(){
+    if(!is_Empty_B()){
+    std::cout<< " ...test passed"<<std::endl;
+    top_b++;
+    return arr[top_b];
+    
+    }
+}
+
+//push methods
+template <class T>
+void stack_pair<T>::push_a(T item){
+  if(!is_Full_A())
+  {
+    arr[top_a] = item;
+    top_a++;
+    std::cout<< " ...test passed"<<std::endl;
+  }
+}
+template <class T>
+void stack_pair<T>::push_b(T item){
+  if(!is_Full_B()){
+    arr[top_b] = item;
+    top_b--;
+    std::cout<< " ...test passed"<<std::endl;
+  }
+}
+
+template <class T>
+size_t stack_pair<T>::size_a(){
+  return top_a;
+}
+
+template <class T>
+size_t stack_pair<T>::size_b(){
+  return CAPACITY-top_b;
+}
+
+
